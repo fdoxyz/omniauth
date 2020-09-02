@@ -38,6 +38,8 @@ module OmniAuth
       end
 
       args.last.is_a?(Hash) ? args.push(options.merge(args.pop)) : args.push(options)
+      puts "TESTING OPTIONS: #{args.inspect}"
+      puts "TESTING OPTIONS: #{options.inspect}"
       use middleware, *args, &block
     end
 
