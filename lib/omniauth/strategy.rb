@@ -421,6 +421,9 @@ module OmniAuth
     end
 
     def full_host
+      puts "full_host"
+      puts OmniAuth.config.full_host
+      puts "-"*30
       case OmniAuth.config.full_host
       when String
         OmniAuth.config.full_host
@@ -428,6 +431,8 @@ module OmniAuth
         OmniAuth.config.full_host.call(env)
       else
         # in Rack 1.3.x, request.url explodes if scheme is nil
+        puts "Request building"
+        puts request.scheme
         if request.scheme && request.url.match(URI::ABS_URI)
           uri = URI.parse(request.url.gsub(/\?.*$/, ''))
           uri.path = ''
@@ -441,6 +446,8 @@ module OmniAuth
     end
 
     def callback_url
+      puts "Omniauth callback_url: #{full_host + script_name + callback_path + query_string}"
+      puts "-"*30
       full_host + script_name + callback_path + query_string
     end
 
@@ -509,6 +516,13 @@ module OmniAuth
     end
 
     def ssl?
+      puts "Omniauth checking for ssl?"
+      puts request.env['rack.url_scheme']
+      puts request.env['HTTP_X_FORWARDED_SCHEME']
+      puts request.env['HTTP_X_FORWARDED_PROTO']
+      puts request.env['HTTPS']
+      puts request.env['HTTP_X_FORWARDED_SSL']
+      puts "-"*30
       request.env['HTTPS'] == 'on' ||
         request.env['HTTP_X_FORWARDED_SSL'] == 'on' ||
         request.env['HTTP_X_FORWARDED_SCHEME'] == 'https' ||
